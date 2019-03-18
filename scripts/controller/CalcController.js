@@ -65,9 +65,6 @@ class CalcController {
             this._lastNumber = this.getLastItem(false);
         }
 
-        console.log('this._lastOperator ' + this._lastOperator);
-        console.log('this._lastNumber ' + this._lastNumber);
-
         let result = this.getResult();
 
         if(last == '%'){
