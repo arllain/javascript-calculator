@@ -103,8 +103,6 @@ class CalcController {
         if(isNaN(this.getLastOperation())){
             if(this.isOperator(value)){
                 this.setLastOperation(value);
-            }else if (isNaN(value)){
-                console.log(value);
             }else{
                 this.pushOperation(value);
                 this.setLastNumberToDisplay();
@@ -113,7 +111,7 @@ class CalcController {
             if(this.isOperator(value)){
                 this.pushOperation(value);
             }else{
-                this.setLastOperation(parseInt(this.getLastOperation().toString() + value.toString()));
+                this.setLastOperation(parseFloat(this.getLastOperation().toString() + value.toString()));
                 this.setLastNumberToDisplay();
             }
         }
@@ -121,6 +119,8 @@ class CalcController {
 
     clearAll(){
         this._operation = [];
+        this._lastNumber = '';
+        this._lastOperator = '';
         this.setLastNumberToDisplay();
     }
 
@@ -133,6 +133,17 @@ class CalcController {
         this.displayCacl = "Error";
     }
  
+    addDot(){
+        let lastOperation = this.getLastOperation();
+        if(this.isOperator(lastOperation) || !lastOperation){
+            this.pushOperation('0.');
+        }else{
+            this.setLastOperation(lastOperation.toString + '.');
+        }
+
+        this.setLastNumberToDisplay();
+
+    }
 
     execBtb(value){
         switch (value) {
@@ -162,7 +173,7 @@ class CalcController {
                 this.calc();
                 break;
             case 'ponto':
-                this.addOperation('.');
+                this.addDot('.');
                 break;
             case '0':
             case '1':
@@ -174,7 +185,7 @@ class CalcController {
             case '7':
             case '8':
             case '9':
-                this.addOperation(parseInt(value))
+                this.addOperation(parseFloat(value))
                 break;
             default:
                 this.setError();
