@@ -111,7 +111,8 @@ class CalcController {
             if(this.isOperator(value)){
                 this.pushOperation(value);
             }else{
-                this.setLastOperation(parseFloat(this.getLastOperation().toString() + value.toString()));
+                let newValue = this.getLastOperation().toString() + value.toString();
+                this.setLastOperation(newValue);
                 this.setLastNumberToDisplay();
             }
         }
@@ -135,10 +136,15 @@ class CalcController {
  
     addDot(){
         let lastOperation = this.getLastOperation();
+
+        if(typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1){
+            return;
+        }
+
         if(this.isOperator(lastOperation) || !lastOperation){
             this.pushOperation('0.');
         }else{
-            this.setLastOperation(lastOperation.toString + '.');
+            this.setLastOperation(lastOperation.toString() + '.');
         }
 
         this.setLastNumberToDisplay();
@@ -169,7 +175,6 @@ class CalcController {
                 this.addOperation('%');
                 break;
             case 'igual':
-                this.addOperation('=');
                 this.calc();
                 break;
             case 'ponto':
@@ -185,7 +190,7 @@ class CalcController {
             case '7':
             case '8':
             case '9':
-                this.addOperation(parseFloat(value))
+                this.addOperation(parseInt(value));
                 break;
             default:
                 this.setError();
